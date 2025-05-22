@@ -1,8 +1,8 @@
----
+# TermySH - A Open-Sourced Local-Based Shell Terminal
 
-# TermynalR - Local Based Version (LBV)
+*(Formerly TermynalR LBV)*
 
-TermynalR is a simple local terminal emulator app for Android, built with Kotlin and Jetpack Compose. It supports basic commands and importing local packages to extend functionality.
+TermySH is a simple, open-source local-based shell terminal emulator app for Android. It supports its own command language, Termy, and local packages that extend the terminal’s functionality without relying on external dependencies.
 
 ---
 
@@ -10,65 +10,80 @@ TermynalR is a simple local terminal emulator app for Android, built with Kotlin
 
 ### Overview
 
-* Developed in **Kotlin** using **Jetpack Compose**.
-* Provides a terminal-like interface with input and output areas.
-* Supports internal commands and modular package imports (`math` and `game`).
+* Developed entirely in **Kotlin** with **Jetpack Compose**.
+* Provides a terminal interface with input/output areas.
+* Supports internal commands and modular local packages such as `math`, `shell`, and `files`.
+* Designed to be self-contained: all packages and command executions happen locally within the app.
 
 ---
 
 ### Code Structure
 
-* **MainActivity**: Sets up the UI and enables edge-to-edge display.
-* **TerminalScreen**: Composable that shows terminal output and input field.
-* **interpretCommand**: Function that processes user input and returns output lines based on commands and imported packages.
+* **MainActivity**: Initializes the UI, sets edge-to-edge layout, and manages keyboard behavior.
+* **TerminalScreen**: Composable showing terminal output and input field, handling command input.
+* **interpretCommand**: Core function parsing and processing user input commands, including package-specific commands.
 
 ---
 
 ### State Management
 
-* `output`: List of strings representing terminal lines, stored as a mutable Compose state.
-* `command`: Current text input, managed as Compose state.
-* `importedPackages`: Mutable state list holding names of imported packages.
+* `output`: Mutable Compose state holding terminal lines (output history).
+* `command`: Compose state for current input line.
+* `importedPackages`: Mutable list storing imported package names, enabling package-specific commands.
 
 ---
 
 ### User Interface
 
-* Output is shown in a scrollable column with white text on black background.
-* Input is a single-line text field with dark gray background.
-* Keyboard is managed to hide after command submission.
+* Terminal output displayed in a vertically scrollable column with white text on a black background for contrast.
+* Single-line input field with dark gray background for ease of typing and clear visibility.
+* Keyboard automatically hides upon command submission to improve UX.
 
 ---
 
 ### Commands
 
-* Basic commands:
+* **Common commands:**
 
-  * `ty.h` — Show help menu.
-  * `ty.clear` — Clear terminal screen.
-  * `ty.echo [text]` — Print text.
-  * `ty.time` — Show current system time.
-  * `ty.import <package>` — Import local packages (`math`, `game`).
+  * `h` — Displays the help page
+  * `clear` — Clears the terminal
+  * `echo [text]` — Echo things
+  * `time` — Shows system time
+  * `termy-import <package>` — Imports a local package (`math`, `shell`, `files`)
+  * `termy-request-permission` — Asks for file / full acess permissions
+* **math** package commands (active after `termy-import math`):
 
-* **math** package commands (active after `ty.import math`):
+  * `math.add <num1> <num2>` — Adds two numbers.
+  * `math.mul <num1> <num2>` — Multiplies two numbers.
 
-  * `math.add <num1> <num2>` — Add two numbers.
-  * `math.mul <num1> <num2>` — Multiply two numbers.
-  * `math.h` — Show math package help.
+* **shell** package commands (active after `termy-import shell`):
 
-* **game** package commands (active after `ty.import game`):
+  * Supports basic Unix-shell commands, enabling execution of typical Linux/Unix commands similar to Termux.
+  * `ls` — Lists archives
+  * `mkdir` — Create dirs
+  * And much more!
 
-  * `game.play` — Start simulated game.
-  * `game.help` — Show game package help.
-  * `game.h` — Show game package commands.
+
+* **files** package commands (active after `ty.import files`):
+
+  * Allows file reading and writing inside the local Android filesystem sandbox.
+  * `files.list dir` — Shows archives inside a dir
+  * `files.read path` — Read archives
 
 ---
 
 ### Command Interpretation
 
-* Commands are matched via simple string comparisons.
-* Package commands are only available after import.
-* Arguments are parsed by splitting input strings.
-* Errors are handled by returning messages for unknown commands or wrong arguments.
+* Commands are parsed via string matching and argument splitting.
+* Package commands are only accessible after explicit import to maintain modularity.
+* Error handling returns clear messages on unknown commands or invalid argument count.
+
+---
+
+## Main Available Packages
+
+* ➔ **math** — Adds basic math functions (multiply, add).
+* ➔ **shell** — Adds Unix-shell commands, allowing execution of most Linux/Unix commands, similar to Termux.
+* ➔ **files** — Enables reading and writing files within the local Android filesystem sandbox.
 
 ---
