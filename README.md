@@ -1,89 +1,79 @@
-# TermySH - A Open-Sourced Local-Based Shell Terminal
+# TermySH - A Powerful Local-Based Shell Terminal for Android  
 
-*(Formerly TermynalR LBV)*
+*(Formerly TermynalR LBV)*  
 
-TermySH is a simple, open-source local-based shell terminal emulator app for Android. It supports its own command language, Termy, and local packages that extend the terminal’s functionality without relying on external dependencies.
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.9.0-blue.svg)](https://kotlinlang.org) 
+[![Compose](https://img.shields.io/badge/Jetpack%20Compose-1.5.0-brightgreen)](https://developer.android.com/jetpack/compose)
+[![License](https://img.shields.io/badge/License-Apache%202.0-orange.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Version](https://img.shields.io/badge/Version-0.0.6-important)]()
 
----
-
-## Technical Documentation
-
-### Overview
-
-* Developed entirely in **Kotlin** with **Jetpack Compose**.
-* Provides a terminal interface with input/output areas.
-* Supports internal commands and modular local packages such as `math`, `shell`, and `files`.
-* Designed to be self-contained: all packages and command executions happen locally within the app.
+TermySH is an open-source Android terminal emulator focusing on secure, local command execution with native Android APIs.
 
 ---
 
-### Code Structure
+## Key Features
 
-* **MainActivity**: Initializes the UI, sets edge-to-edge layout, and manages keyboard behavior.
-* **TerminalScreen**: Composable showing terminal output and input field, handling command input.
-* **interpretCommand**: Core function parsing and processing user input commands, including package-specific commands.
-
----
-
-### State Management
-
-* `output`: Mutable Compose state holding terminal lines (output history).
-* `command`: Compose state for current input line.
-* `importedPackages`: Mutable list storing imported package names, enabling package-specific commands.
+- **Pure Kotlin** - No native dependencies
+- **Math Package** - Advanced arithmetic operations
+- **Shell Integration** - Safe `sh` command execution
+- **Modern UI** - Jetpack Compose with Material3
+- **Permission Control** - Granular access management
 
 ---
 
-### User Interface
-
-* Terminal output displayed in a vertically scrollable column with white text on a black background for contrast.
-* Single-line input field with dark gray background for ease of typing and clear visibility.
-* Keyboard automatically hides upon command submission to improve UX.
+## ⚠ Deprecated Features (v0.0.6+)
+- `shell` package - Replaced by native `sh` command
+- `files` package - Use Android Storage Access Framework instead
 
 ---
 
-### Commands
+## Command Reference
 
-* **Common commands:**
+### Core Commands
+| Command | Description |
+|---------|-------------|
+| `h` | Show help |
+| `clear` | Clear terminal |
+| `echo <text>` | Print text |
+| `time` | System time |
 
-  * `h` — Displays the help page
-  * `clear` — Clears the terminal
-  * `echo [text]` — Echo things
-  * `time` — Shows system time
-  * `termy-import <package>` — Imports a local package (`math`, `shell`, `files`)
-  * `termy-request-permission` — Asks for file / full acess permissions
-* **math** package commands (active after `termy-import math`):
+### Math Package
+```bash
+math.add 5 3       # → 8
+math.div 10 3      # → 3.333...
+```
 
-  * `math.add <num1> <num2>` — Adds two numbers.
-  * `math.mul <num1> <num2>` — Multiplies two numbers.
+### Shell Execution
+```bash
+sh ls -l           # List files (sandboxed)
+sh ping google.com  # Network test
+su cmd             # Root commands (requires root)
+```
 
-* **shell** package commands (active after `termy-import shell`):
-
-  * Supports basic Unix-shell commands, enabling execution of typical Linux/Unix commands similar to Termux.
-  * `ls` — Lists archives
-  * `mkdir` — Create dirs
-  * And much more!
-
-
-* **files** package commands (active after `ty.import files`):
-
-  * Allows file reading and writing inside the local Android filesystem sandbox.
-  * `files.list dir` — Shows archives inside a dir
-  * `files.read path` — Read archives
-
----
-
-### Command Interpretation
-
-* Commands are parsed via string matching and argument splitting.
-* Package commands are only accessible after explicit import to maintain modularity.
-* Error handling returns clear messages on unknown commands or invalid argument count.
+### Permission Control
+```bash
+termy-request-permission  # Manage storage access
+```
 
 ---
 
-## Main Available Packages
+## Current Package System
 
-* ➔ **math** — Adds basic math functions (multiply, add).
-* ➔ **shell** — Adds Unix-shell commands, allowing execution of most Linux/Unix commands, similar to Termux.
-* ➔ **files** — Enables reading and writing files within the local Android filesystem sandbox.
+| Package | Status | Description |
+|---------|--------|-------------|
+| `math`  | ✅ Active | Arithmetic operations |
+| `shell` | ❌ Deprecated | Use native `sh` instead |
+| `files` | ❌ Deprecated | Use Android Storage API |
 
 ---
+
+## Security Notes
+- `sh` commands run in app sandbox
+- `su` requires rooted device
+- All file access uses Android permission system
+
+---
+
+## Development
+```bash
+./gradlew assembleDebug
