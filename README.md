@@ -40,6 +40,7 @@ TermySH is an open-source Android terminal emulator focusing on secure, local co
 ### Math Package
 ```bash
 math.add 5 3       # → 8
+math.mul 1 2       # → 2
 math.div 10 3      # → 3.333...
 ```
 
